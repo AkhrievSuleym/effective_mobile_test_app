@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:logger/logger.dart';
@@ -15,8 +15,11 @@ import 'package:rick_and_morty_app/feature/presentation/bloc/character_bloc.dart
 
 final serviceLocator = GetIt.instance;
 Future<void> initDependencies() async {
-  Hive.defaultDirectory = (await getApplicationDocumentsDirectory()).path;
-  serviceLocator.registerLazySingleton(() => Hive.box(name: 'notes'));
+  final directory = await getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+  final characterBox = await Hive.openBox<Map<String, dynamic>>('characters');
+
+  serviceLocator.registerLazySingleton(() => characterBox);
   serviceLocator.registerFactory(() => InternetConnection());
 
   serviceLocator.registerLazySingleton(() => Logger());

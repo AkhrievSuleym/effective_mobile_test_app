@@ -19,7 +19,7 @@ class CharacterLoaded extends CharacterState {
   const CharacterLoaded({required this.characters});
 }
 
-class CharacterLoadToCashe extends CharacterState {}
+class CharacterLoadToCache extends CharacterState {}
 
 class CharacterError extends CharacterState {
   final String message;
