@@ -6,7 +6,12 @@ abstract class CharacterState {
 
 class CharacterInitial extends CharacterState {}
 
-class CharacterLoading extends CharacterState {}
+class CharacterLoading extends CharacterState {
+  final List<CharacterEntity> oldCharactersList;
+  final bool isFirstFetch;
+
+  const CharacterLoading(this.oldCharactersList, {this.isFirstFetch = false});
+}
 
 class CharacterLoaded extends CharacterState {
   final List<CharacterEntity> characters;
