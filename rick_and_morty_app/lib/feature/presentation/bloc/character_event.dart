@@ -8,7 +8,7 @@ class GetCharacters extends CharacterEvent {
   GetCharacters({required this.page});
 }
 
-class LoadCharacterToCashe extends CharacterEvent {
+class LoadCharacterToCache extends CharacterEvent {
   final int id;
   final String name;
   final String status;
@@ -19,7 +19,7 @@ class LoadCharacterToCashe extends CharacterEvent {
   final List<String> episode;
   final DateTime created;
 
-  LoadCharacterToCashe(
+  LoadCharacterToCache(
       {required this.id,
       required this.name,
       required this.status,
