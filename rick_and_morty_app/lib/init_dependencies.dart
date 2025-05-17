@@ -11,7 +11,7 @@ import 'package:rick_and_morty_app/feature/data/repositories/character_repo_impl
 import 'package:rick_and_morty_app/feature/domain/repositories/character_repository.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/get_all_characters.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/load_character.dart';
-import 'package:rick_and_morty_app/feature/presentation/bloc/character_bloc.dart';
+import 'package:rick_and_morty_app/feature/presentation/bloc/characters_bloc.dart/character_bloc.dart';
 
 final serviceLocator = GetIt.instance;
 Future<void> initDependencies() async {

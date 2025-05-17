@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:rick_and_morty_app/core/theme/app_pallete.dart';
 import 'package:rick_and_morty_app/feature/domain/entities/character_entity.dart';
-import 'package:rick_and_morty_app/feature/presentation/bloc/character_bloc.dart';
+import 'package:rick_and_morty_app/feature/presentation/bloc/characters_bloc.dart/character_bloc.dart';
 import 'package:rick_and_morty_app/feature/presentation/widgets/character_card_widget.dart';
 import 'package:rick_and_morty_app/feature/presentation/widgets/loading_widget.dart';
 

@@ -15,4 +15,5 @@ abstract class CharacterRepository {
     required List<String> episode,
     required DateTime created,
   });
+  Future<Either<Failure, void>> deleteCharacter(String id);
 }

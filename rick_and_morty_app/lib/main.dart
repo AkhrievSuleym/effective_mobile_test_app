@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_app/core/theme/app_theme.dart';
-import 'package:rick_and_morty_app/feature/presentation/bloc/character_bloc.dart';
+import 'package:rick_and_morty_app/feature/presentation/bloc/characters_bloc.dart/character_bloc.dart';
 import 'package:rick_and_morty_app/feature/presentation/pages/characters_page.dart';
 import 'package:rick_and_morty_app/init_dependencies.dart';
 

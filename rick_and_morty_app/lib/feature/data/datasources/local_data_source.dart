@@ -4,6 +4,7 @@ import 'package:rick_and_morty_app/feature/data/models/character_model.dart';
 abstract class LocalDataSource {
   List<CharacterModel> loadCharacters();
   Future<void> uploadLocalCharacter({required CharacterModel character});
+  Future<void> deleteLocalCharacter({required String id});
 }
 
 const CHARACTER_BOX = 'character_box';
@@ -28,5 +29,10 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   Future<void> uploadLocalCharacter({required CharacterModel character}) async {
     characterBox.put(character.id.toString(), character.toJson());
+  }
+
+  @override
+  Future<void> deleteLocalCharacter({required String id}) async {
+    await characterBox.delete(id);
   }
 }
