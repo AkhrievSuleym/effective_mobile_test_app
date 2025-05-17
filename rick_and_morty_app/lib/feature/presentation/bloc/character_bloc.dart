@@ -1,18 +1,18 @@
-import 'dart:async';
-
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:rick_and_morty_app/core/error/failure.dart';
 import 'package:rick_and_morty_app/feature/domain/entities/character_entity.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/get_all_characters.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/load_character.dart';
-import 'package:rick_and_morty_app/feature/presentation/bloc/character_event.dart';
-import 'package:rick_and_morty_app/feature/presentation/bloc/character_state.dart';
+
+part 'character_event.dart';
+part 'character_state.dart';
 
 class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   final GetAllCharacters _getAllCharacters;
   final LoadCharacter _loadCharacter;
-  int page = 1;
+  final Logger logger = Logger();
 
   CharacterBloc(
       {required GetAllCharacters getAllCharacters,
@@ -20,12 +20,12 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       : _getAllCharacters = getAllCharacters,
         _loadCharacter = loadCharacter,
         super(CharacterInitial()) {
-    on<GetCharacters>(_onGetAllCharacters);
-    on<LoadCharacterToCache>(_onLoadCharacter);
+    on<GetCharactersEvent>(_onGetAllCharacters);
+    on<LoadCharacterToCacheEvent>(_onLoadCharacter);
   }
 
   void _onGetAllCharacters(
-      GetCharacters event, Emitter<CharacterState> emit) async {
+      GetCharactersEvent event, Emitter<CharacterState> emit) async {
     final currentState = state;
 
     var oldCharacters = <CharacterEntity>[];
@@ -33,7 +33,7 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       oldCharacters = currentState.characters;
     }
 
-    emit(CharacterLoading(oldCharacters, isFirstFetch: page == 1));
+    emit(CharacterLoading(oldCharacters, isFirstFetch: event.page == 1));
 
     final failureOrCharacters =
         await _getAllCharacters(GetCharacterParams(page: event.page));
@@ -41,7 +41,6 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
     failureOrCharacters.fold(
         (failure) => emit(CharacterError(message: _failureToMessage(failure))),
         (character) {
-      page++;
       final characters = (state as CharacterLoading).oldCharactersList;
       characters.addAll(character);
       emit(CharacterLoaded(characters: characters));
@@ -49,7 +48,7 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   }
 
   void _onLoadCharacter(
-      LoadCharacterToCache event, Emitter<CharacterState> emit) async {
+      LoadCharacterToCacheEvent event, Emitter<CharacterState> emit) async {
     final res = await _loadCharacter(LoadCharacterParams(
         id: event.id,
         name: event.name,

@@ -1,14 +1,15 @@
-abstract class CharacterEvent {
-  const CharacterEvent();
-}
+part of 'character_bloc.dart';
 
-class GetCharacters extends CharacterEvent {
+@immutable
+sealed class CharacterEvent {}
+
+class GetCharactersEvent extends CharacterEvent {
   final int page;
 
-  GetCharacters({required this.page});
+  GetCharactersEvent({required this.page});
 }
 
-class LoadCharacterToCache extends CharacterEvent {
+class LoadCharacterToCacheEvent extends CharacterEvent {
   final int id;
   final String name;
   final String status;
@@ -19,7 +20,7 @@ class LoadCharacterToCache extends CharacterEvent {
   final List<String> episode;
   final DateTime created;
 
-  LoadCharacterToCache(
+  LoadCharacterToCacheEvent(
       {required this.id,
       required this.name,
       required this.status,
