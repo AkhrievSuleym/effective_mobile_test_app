@@ -16,7 +16,7 @@ class FavoritesDelete extends FavoritesState {}
 class FavoriteUploaded extends FavoritesState {}
 
 class FavoritesLoaded extends FavoritesState {
-  final List<CharacterEntity> characters;
+  final List<CharacterModel> characters;
 
   const FavoritesLoaded(this.characters);
 }

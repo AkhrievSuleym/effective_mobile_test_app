@@ -6,27 +6,28 @@ part of 'hive_character_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CharacterAdapter extends TypeAdapter<LocalCharacter> {
+class CharacterModelAdapter extends TypeAdapter<CharacterModel> {
   @override
-  final int typeId = 0;
+  final int typeId = 1;
 
   @override
-  LocalCharacter read(BinaryReader reader) {
+  CharacterModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return LocalCharacter()
-      ..id = fields[0] as int
-      ..name = fields[1] as String
-      ..status = fields[2] as String
-      ..image = fields[3] as String
-      ..species = fields[4] as String
-      ..gender = fields[5] as String;
+    return CharacterModel(
+      id: fields[0] as int,
+      name: fields[1] as String,
+      status: fields[2] as String,
+      image: fields[3] as String,
+      species: fields[4] as String,
+      gender: fields[5] as String,
+    );
   }
 
   @override
-  void write(BinaryWriter writer, LocalCharacter obj) {
+  void write(BinaryWriter writer, CharacterModel obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -49,7 +50,7 @@ class CharacterAdapter extends TypeAdapter<LocalCharacter> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CharacterAdapter &&
+      other is CharacterModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

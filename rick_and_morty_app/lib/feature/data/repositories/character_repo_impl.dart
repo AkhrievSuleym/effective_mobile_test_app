@@ -4,9 +4,7 @@ import 'package:rick_and_morty_app/core/error/failure.dart';
 import 'package:rick_and_morty_app/core/network/connection.dart';
 import 'package:rick_and_morty_app/feature/data/datasources/local_data_source.dart';
 import 'package:rick_and_morty_app/feature/data/datasources/remote_data_source.dart';
-import 'package:rick_and_morty_app/feature/data/models/character_model.dart';
 import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
-import 'package:rick_and_morty_app/feature/domain/entities/character_entity.dart';
 import 'package:rick_and_morty_app/feature/domain/repositories/character_repository.dart';
 
 class CharacterRepoImpl implements CharacterRepository {
@@ -21,7 +19,7 @@ class CharacterRepoImpl implements CharacterRepository {
   );
 
   @override
-  Future<Either<Failure, List<CharacterEntity>>> getAllCharacters(
+  Future<Either<Failure, List<CharacterModel>>> getAllCharacters(
       int page) async {
     if (await connectionChecker.isConnected) {
       try {
@@ -33,8 +31,8 @@ class CharacterRepoImpl implements CharacterRepository {
       }
     } else {
       try {
-        final localCharacters = characterLocalDataSource.loadCharacters();
-        return right(localCharacters as List<CharacterEntity>);
+        final localCharacters = await characterLocalDataSource.loadCharacters();
+        return right(localCharacters);
       } on CacheException {
         return left(CacheFailure());
       }
@@ -51,7 +49,7 @@ class CharacterRepoImpl implements CharacterRepository {
     required String image,
   }) async {
     try {
-      LocalCharacter character = LocalCharacter(
+      CharacterModel character = CharacterModel(
         id: id,
         name: name,
         status: status,
@@ -77,11 +75,11 @@ class CharacterRepoImpl implements CharacterRepository {
   }
 
   @override
-  Future<Either<Failure, List<CharacterEntity>>>
+  Future<Either<Failure, List<CharacterModel>>>
       getAllFavoriteCharacters() async {
     try {
-      final localCharacters = characterLocalDataSource.loadCharacters();
-      return right(localCharacters as List<CharacterEntity>);
+      final localCharacters = await characterLocalDataSource.loadCharacters();
+      return right(localCharacters);
     } on CacheException {
       return left(CacheFailure());
     }

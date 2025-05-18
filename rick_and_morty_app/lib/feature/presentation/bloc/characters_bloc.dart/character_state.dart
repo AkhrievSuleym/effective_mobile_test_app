@@ -6,14 +6,14 @@ sealed class CharacterState {}
 class CharacterInitial extends CharacterState {}
 
 class CharacterLoading extends CharacterState {
-  final List<CharacterEntity> oldCharactersList;
+  final List<CharacterModel> oldCharactersList;
   final bool isFirstFetch;
 
   CharacterLoading(this.oldCharactersList, {this.isFirstFetch = false});
 }
 
 class CharacterLoaded extends CharacterState {
-  final List<CharacterEntity> characters;
+  final List<CharacterModel> characters;
 
   CharacterLoaded({required this.characters});
 }

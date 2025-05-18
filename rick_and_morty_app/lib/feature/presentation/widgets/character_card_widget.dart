@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_app/core/theme/app_pallete.dart';
-import 'package:rick_and_morty_app/feature/domain/entities/character_entity.dart';
+import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
 import 'package:rick_and_morty_app/feature/presentation/bloc/favorite_bloc.dart/bloc/favorite_bloc.dart';
 import 'package:rick_and_morty_app/feature/presentation/widgets/cache_image_widget.dart';
 
 class CharacterCard extends StatelessWidget {
-  final CharacterEntity character;
+  final CharacterModel character;
   final bool isInitiallyFavorite;
 
   const CharacterCard({
@@ -98,11 +98,8 @@ class CharacterCard extends StatelessWidget {
                       name: character.name,
                       status: character.status,
                       species: character.species,
-                      type: character.type,
                       gender: character.gender,
                       image: character.image,
-                      episode: character.episode,
-                      created: character.created,
                     ));
                   }
                 },

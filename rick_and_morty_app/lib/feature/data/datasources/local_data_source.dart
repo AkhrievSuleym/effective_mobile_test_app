@@ -1,25 +1,30 @@
 import 'package:hive/hive.dart';
-import 'package:rick_and_morty_app/feature/data/models/character_model.dart';
 import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
 
 abstract class LocalDataSource {
-  Future<List<LocalCharacter>> loadCharacters();
-  Future<void> uploadLocalCharacter({required LocalCharacter character});
+  Future<List<CharacterModel>> loadCharacters();
+  Future<void> uploadLocalCharacter({required CharacterModel character});
   Future<void> deleteLocalCharacter({required int id});
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
-  Future<Box<LocalCharacter>> get _box async =>
-      await Hive.openBox<LocalCharacter>('characters_box');
+  static const String _boxName = 'characters_box';
+
+  Future<Box<CharacterModel>> get _box async {
+    if (!Hive.isBoxOpen(_boxName)) {
+      return await Hive.openBox<CharacterModel>(_boxName);
+    }
+    return Hive.box<CharacterModel>(_boxName);
+  }
 
   @override
-  Future<List<LocalCharacter>> loadCharacters() async {
+  Future<List<CharacterModel>> loadCharacters() async {
     var box = await _box;
     return box.values.toList();
   }
 
   @override
-  Future<void> uploadLocalCharacter({required LocalCharacter character}) async {
+  Future<void> uploadLocalCharacter({required CharacterModel character}) async {
     var box = await _box;
     await box.add(character);
   }

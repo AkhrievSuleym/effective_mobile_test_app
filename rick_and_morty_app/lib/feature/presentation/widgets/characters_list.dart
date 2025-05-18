@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:rick_and_morty_app/core/theme/app_pallete.dart';
-import 'package:rick_and_morty_app/feature/domain/entities/character_entity.dart';
+import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
 import 'package:rick_and_morty_app/feature/presentation/bloc/characters_bloc.dart/character_bloc.dart';
 import 'package:rick_and_morty_app/feature/presentation/bloc/favorite_bloc.dart/bloc/favorite_bloc.dart';
 import 'package:rick_and_morty_app/feature/presentation/widgets/character_card_widget.dart';
@@ -53,7 +53,7 @@ class _CharactersListState extends State<CharactersList> {
   Widget build(BuildContext context) {
     return BlocBuilder<CharacterBloc, CharacterState>(
         builder: (context, state) {
-      List<CharacterEntity> characters = [];
+      List<CharacterModel> characters = [];
       bool isLoading = false;
       if (state is CharacterLoading && state.isFirstFetch) {
         return const LoadingIcon();
@@ -70,7 +70,7 @@ class _CharactersListState extends State<CharactersList> {
       }
       return BlocBuilder<FavoritesBloc, FavoritesState>(
         builder: (context, favoritesState) {
-          List<CharacterEntity> favoriteCharacters = [];
+          List<CharacterModel> favoriteCharacters = [];
 
           if (favoritesState is FavoritesLoaded) {
             favoriteCharacters = favoritesState.characters;

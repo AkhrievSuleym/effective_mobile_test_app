@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:rick_and_morty_app/core/error/failure.dart';
-import 'package:rick_and_morty_app/feature/domain/entities/character_entity.dart';
+import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/get_all_characters.dart';
-import 'package:rick_and_morty_app/feature/domain/usecases/load_character.dart';
 
 part 'character_event.dart';
 part 'character_state.dart';
@@ -24,7 +23,7 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       GetCharactersEvent event, Emitter<CharacterState> emit) async {
     final currentState = state;
 
-    var oldCharacters = <CharacterEntity>[];
+    var oldCharacters = <CharacterModel>[];
     if (currentState is CharacterLoaded) {
       oldCharacters = currentState.characters;
     }

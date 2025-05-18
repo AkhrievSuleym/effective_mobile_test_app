@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_app/core/error/failure.dart';
-import 'package:rick_and_morty_app/feature/domain/entities/character_entity.dart';
+import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/delete_character.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/get_favorite_chacarters.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/load_character.dart';

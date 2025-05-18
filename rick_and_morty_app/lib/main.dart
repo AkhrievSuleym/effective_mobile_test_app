@@ -10,9 +10,9 @@ import 'package:rick_and_morty_app/init_dependencies.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.openBox<LocalCharacter>('characters_box');
 
   await initDependencies();
+
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
