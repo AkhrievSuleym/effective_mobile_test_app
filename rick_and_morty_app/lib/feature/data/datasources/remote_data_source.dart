@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:rick_and_morty_app/core/error/exceptions.dart';
-import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
+import 'package:rick_and_morty_app/feature/data/models/character_model.dart';
 
 abstract class RemoteDataSource {
   Future<List<CharacterModel>> getAllCharacters(int page);

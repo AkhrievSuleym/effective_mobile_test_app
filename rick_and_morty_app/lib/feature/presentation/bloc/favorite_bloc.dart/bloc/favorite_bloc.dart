@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty_app/core/error/failure.dart';
-import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
+import 'package:rick_and_morty_app/feature/data/models/character_model.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/delete_character.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/get_favorite_chacarters.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/load_character.dart';
@@ -25,6 +25,7 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
     on<UploadFavoriteEvent>(_onUploadCharacter);
     on<RemoveFavoriteEvent>(_onDeleteFavorite);
     on<LoadCharactersEvent>(_onGetAllFavorites);
+    add(LoadCharactersEvent());
   }
 
   void _onGetAllFavorites(
@@ -36,39 +37,31 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
 
   void _onDeleteFavorite(
       RemoveFavoriteEvent event, Emitter<FavoritesState> emit) async {
-    final res =
-        await _deleteCharacter(DeleteCharacterParams(id: event.characterId));
-    await res.fold(
-        (failure) async => emit(FavoritesError(_failureToMessage(failure))),
-        (character) async {
-      final characters = await _allFavoriteCharacters(EmptyParams());
-      characters.fold(
-        (failure) => emit(FavoritesError(_failureToMessage(failure))),
-        (chars) => emit(FavoritesLoaded(chars)),
-      );
-    });
+    try {
+      await _deleteCharacter(DeleteCharacterParams(id: event.characterId));
+
+      add(LoadCharactersEvent());
+    } catch (e) {
+      emit(FavoritesError('Failed to remove favorite: ${e.toString()}'));
+    }
   }
 
   void _onUploadCharacter(
       UploadFavoriteEvent event, Emitter<FavoritesState> emit) async {
-    final res = await _uploadCharacter(UploadCharacterParams(
-      id: event.id,
-      name: event.name,
-      status: event.status,
-      species: event.species,
-      gender: event.gender,
-      image: event.image,
-    ));
-
-    await res.fold(
-        (failure) async => emit(FavoritesError(_failureToMessage(failure))),
-        (character) async {
-      final characters = await _allFavoriteCharacters(EmptyParams());
-      characters.fold(
-        (failure) => emit(FavoritesError(_failureToMessage(failure))),
-        (chars) => emit(FavoritesLoaded(chars)),
-      );
-    });
+    try {
+      await _uploadCharacter(UploadCharacterParams(
+        id: event.id,
+        name: event.name,
+        status: event.status,
+        species: event.species,
+        gender: event.gender,
+        image: event.image,
+      ));
+      print('Character ${event.id} added');
+      add(LoadCharactersEvent());
+    } catch (e) {
+      emit(FavoritesError('Failed to add favorite: ${e.toString()}'));
+    }
   }
 
   String _failureToMessage(Failure failure) {

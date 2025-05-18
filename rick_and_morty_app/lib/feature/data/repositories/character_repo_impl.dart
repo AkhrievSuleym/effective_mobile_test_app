@@ -4,7 +4,7 @@ import 'package:rick_and_morty_app/core/error/failure.dart';
 import 'package:rick_and_morty_app/core/network/connection.dart';
 import 'package:rick_and_morty_app/feature/data/datasources/local_data_source.dart';
 import 'package:rick_and_morty_app/feature/data/datasources/remote_data_source.dart';
-import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
+import 'package:rick_and_morty_app/feature/data/models/character_model.dart';
 import 'package:rick_and_morty_app/feature/domain/repositories/character_repository.dart';
 
 class CharacterRepoImpl implements CharacterRepository {
@@ -31,7 +31,7 @@ class CharacterRepoImpl implements CharacterRepository {
       }
     } else {
       try {
-        final localCharacters = await characterLocalDataSource.loadCharacters();
+        final localCharacters = await characterLocalDataSource.getFavorites();
         return right(localCharacters);
       } on CacheException {
         return left(CacheFailure());
@@ -57,7 +57,7 @@ class CharacterRepoImpl implements CharacterRepository {
         gender: gender,
         image: image,
       );
-      characterLocalDataSource.uploadLocalCharacter(character: character);
+      await characterLocalDataSource.addFavorite(character: character);
       return right(null);
     } on CacheException {
       return left(CacheFailure());
@@ -67,7 +67,7 @@ class CharacterRepoImpl implements CharacterRepository {
   @override
   Future<Either<Failure, void>> deleteCharacter(int id) async {
     try {
-      await characterLocalDataSource.deleteLocalCharacter(id: id);
+      await characterLocalDataSource.removeFavorite(id: id);
       return right(null);
     } on CacheException {
       return left(CacheFailure());
@@ -78,7 +78,7 @@ class CharacterRepoImpl implements CharacterRepository {
   Future<Either<Failure, List<CharacterModel>>>
       getAllFavoriteCharacters() async {
     try {
-      final localCharacters = await characterLocalDataSource.loadCharacters();
+      final localCharacters = await characterLocalDataSource.getFavorites();
       return right(localCharacters);
     } on CacheException {
       return left(CacheFailure());

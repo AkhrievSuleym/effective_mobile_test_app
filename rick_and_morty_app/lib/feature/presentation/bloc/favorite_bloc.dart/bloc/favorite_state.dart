@@ -19,6 +19,8 @@ class FavoritesLoaded extends FavoritesState {
   final List<CharacterModel> characters;
 
   const FavoritesLoaded(this.characters);
+  @override
+  List<Object> get props => [characters];
 }
 
 class FavoritesError extends FavoritesState {

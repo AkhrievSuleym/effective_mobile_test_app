@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:rick_and_morty_app/core/theme/app_theme.dart';
-import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
+import 'package:rick_and_morty_app/feature/data/models/character_model.dart';
 import 'package:rick_and_morty_app/feature/presentation/bloc/characters_bloc.dart/character_bloc.dart';
 import 'package:rick_and_morty_app/feature/presentation/bloc/favorite_bloc.dart/bloc/favorite_bloc.dart';
 import 'package:rick_and_morty_app/feature/presentation/pages/characters_page.dart';

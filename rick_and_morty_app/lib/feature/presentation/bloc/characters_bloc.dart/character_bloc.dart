@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:rick_and_morty_app/core/error/failure.dart';
-import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
+import 'package:rick_and_morty_app/feature/data/models/character_model.dart';
 import 'package:rick_and_morty_app/feature/domain/usecases/get_all_characters.dart';
 
 part 'character_event.dart';

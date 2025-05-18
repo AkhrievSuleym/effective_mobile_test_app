@@ -1,37 +1,48 @@
-import 'package:hive/hive.dart';
-import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
+import 'dart:convert';
+
+import 'package:rick_and_morty_app/feature/data/models/character_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class LocalDataSource {
-  Future<List<CharacterModel>> loadCharacters();
-  Future<void> uploadLocalCharacter({required CharacterModel character});
-  Future<void> deleteLocalCharacter({required int id});
+  Future<List<CharacterModel>> getFavorites();
+  Future<void> addFavorite({required CharacterModel character});
+  Future<void> removeFavorite({required int id});
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
-  static const String _boxName = 'characters_box';
+  static const _favoritesKey = 'favorite_characters';
 
-  Future<Box<CharacterModel>> get _box async {
-    if (!Hive.isBoxOpen(_boxName)) {
-      return await Hive.openBox<CharacterModel>(_boxName);
+  @override
+  Future<List<CharacterModel>> getFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonStringList = prefs.getStringList(_favoritesKey) ?? [];
+
+    return jsonStringList
+        .map((json) => CharacterModel.fromJson(jsonDecode(json)))
+        .toList();
+  }
+
+  Future<void> saveFavorites(List<CharacterModel> favorites) async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonList = favorites.map((c) => jsonEncode(c.toJson())).toList();
+    await prefs.setStringList(_favoritesKey, jsonList);
+  }
+
+  @override
+  Future<void> addFavorite({required CharacterModel character}) async {
+    final prefs = await SharedPreferences.getInstance();
+    final currentFavorites = await getFavorites();
+    if (!currentFavorites.any((c) => c.id == character.id)) {
+      currentFavorites.add(character);
+      await saveFavorites(currentFavorites);
     }
-    return Hive.box<CharacterModel>(_boxName);
   }
 
   @override
-  Future<List<CharacterModel>> loadCharacters() async {
-    var box = await _box;
-    return box.values.toList();
-  }
-
-  @override
-  Future<void> uploadLocalCharacter({required CharacterModel character}) async {
-    var box = await _box;
-    await box.add(character);
-  }
-
-  @override
-  Future<void> deleteLocalCharacter({required int id}) async {
-    var box = await _box;
-    await box.deleteAt(id);
+  Future<void> removeFavorite({required int id}) async {
+    final prefs = await SharedPreferences.getInstance();
+    final currentFavorites = await getFavorites();
+    currentFavorites.removeWhere((c) => c.id == id);
+    await saveFavorites(currentFavorites);
   }
 }
