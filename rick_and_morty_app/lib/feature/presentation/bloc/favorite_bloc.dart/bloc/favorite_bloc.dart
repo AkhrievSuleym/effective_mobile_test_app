@@ -57,7 +57,6 @@ class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {
         gender: event.gender,
         image: event.image,
       ));
-      print('Character ${event.id} added');
       add(LoadCharactersEvent());
     } catch (e) {
       emit(FavoritesError('Failed to add favorite: ${e.toString()}'));
