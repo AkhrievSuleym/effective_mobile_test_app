@@ -13,13 +13,12 @@ class FavoritesLoading extends FavoritesState {}
 
 class FavoritesDelete extends FavoritesState {}
 
+class FavoriteUploaded extends FavoritesState {}
+
 class FavoritesLoaded extends FavoritesState {
   final List<CharacterEntity> characters;
 
   const FavoritesLoaded(this.characters);
-
-  @override
-  List<Object> get props => [characters];
 }
 
 class FavoritesError extends FavoritesState {

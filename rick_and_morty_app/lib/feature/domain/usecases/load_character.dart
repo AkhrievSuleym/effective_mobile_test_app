@@ -3,45 +3,38 @@ import 'package:rick_and_morty_app/core/error/failure.dart';
 import 'package:rick_and_morty_app/core/usecases/usecase.dart';
 import 'package:rick_and_morty_app/feature/domain/repositories/character_repository.dart';
 
-class LoadCharacter extends UseCase<void, LoadCharacterParams> {
+class UploadCharacter extends UseCase<void, UploadCharacterParams> {
   final CharacterRepository characterRepository;
 
-  LoadCharacter(this.characterRepository);
+  UploadCharacter(this.characterRepository);
 
   @override
-  Future<Either<Failure, void>> call(LoadCharacterParams params) async {
-    return characterRepository.loadCharacter(
-        id: params.id,
-        name: params.name,
-        status: params.status,
-        species: params.species,
-        type: params.type,
-        gender: params.gender,
-        image: params.image,
-        episode: params.episode,
-        created: params.created);
+  Future<Either<Failure, void>> call(UploadCharacterParams params) async {
+    return characterRepository.uploadCharacter(
+      id: params.id,
+      name: params.name,
+      status: params.status,
+      species: params.species,
+      gender: params.gender,
+      image: params.image,
+    );
   }
 }
 
-class LoadCharacterParams {
+class UploadCharacterParams {
   final int id;
   final String name;
   final String status;
   final String species;
-  final String type;
   final String gender;
   final String image;
-  final List<String> episode;
-  final DateTime created;
 
-  LoadCharacterParams(
-      {required this.id,
-      required this.name,
-      required this.status,
-      required this.species,
-      required this.type,
-      required this.gender,
-      required this.image,
-      required this.episode,
-      required this.created});
+  UploadCharacterParams({
+    required this.id,
+    required this.name,
+    required this.status,
+    required this.species,
+    required this.gender,
+    required this.image,
+  });
 }

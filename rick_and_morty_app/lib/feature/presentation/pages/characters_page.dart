@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Characters'),
+        title: const Text('Rick and Morty'),
         centerTitle: true,
       ),
       body: _pages[_currentIndex],

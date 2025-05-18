@@ -11,17 +11,13 @@ part 'character_state.dart';
 
 class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   final GetAllCharacters _getAllCharacters;
-  final LoadCharacter _loadCharacter;
   final Logger logger = Logger();
 
-  CharacterBloc(
-      {required GetAllCharacters getAllCharacters,
-      required LoadCharacter loadCharacter})
-      : _getAllCharacters = getAllCharacters,
-        _loadCharacter = loadCharacter,
+  CharacterBloc({
+    required GetAllCharacters getAllCharacters,
+  })  : _getAllCharacters = getAllCharacters,
         super(CharacterInitial()) {
     on<GetCharactersEvent>(_onGetAllCharacters);
-    on<LoadCharacterToCacheEvent>(_onLoadCharacter);
   }
 
   void _onGetAllCharacters(
@@ -45,24 +41,6 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       characters.addAll(character);
       emit(CharacterLoaded(characters: characters));
     });
-  }
-
-  void _onLoadCharacter(
-      LoadCharacterToCacheEvent event, Emitter<CharacterState> emit) async {
-    final res = await _loadCharacter(LoadCharacterParams(
-        id: event.id,
-        name: event.name,
-        status: event.status,
-        species: event.species,
-        type: event.type,
-        gender: event.gender,
-        image: event.image,
-        episode: event.episode,
-        created: event.created));
-
-    res.fold(
-        (failure) => emit(CharacterError(message: _failureToMessage(failure))),
-        (character) => emit(CharacterLoadToCache()));
   }
 
   String _failureToMessage(Failure failure) {

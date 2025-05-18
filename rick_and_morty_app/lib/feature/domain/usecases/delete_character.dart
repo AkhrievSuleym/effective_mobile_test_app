@@ -10,7 +10,7 @@ class DeleteCharacter extends UseCase<void, DeleteCharacterParams> {
 
   @override
   Future<Either<Failure, void>> call(DeleteCharacterParams params) {
-    return characterRepository.deleteCharacter(params.id.toString());
+    return characterRepository.deleteCharacter(params.id);
   }
 }
 

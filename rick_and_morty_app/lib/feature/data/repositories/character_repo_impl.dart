@@ -5,6 +5,7 @@ import 'package:rick_and_morty_app/core/network/connection.dart';
 import 'package:rick_and_morty_app/feature/data/datasources/local_data_source.dart';
 import 'package:rick_and_morty_app/feature/data/datasources/remote_data_source.dart';
 import 'package:rick_and_morty_app/feature/data/models/character_model.dart';
+import 'package:rick_and_morty_app/feature/data/models/hive_character_model.dart';
 import 'package:rick_and_morty_app/feature/domain/entities/character_entity.dart';
 import 'package:rick_and_morty_app/feature/domain/repositories/character_repository.dart';
 
@@ -33,7 +34,7 @@ class CharacterRepoImpl implements CharacterRepository {
     } else {
       try {
         final localCharacters = characterLocalDataSource.loadCharacters();
-        return right(localCharacters);
+        return right(localCharacters as List<CharacterEntity>);
       } on CacheException {
         return left(CacheFailure());
       }
@@ -41,30 +42,22 @@ class CharacterRepoImpl implements CharacterRepository {
   }
 
   @override
-  Future<Either<Failure, void>> loadCharacter({
+  Future<Either<Failure, void>> uploadCharacter({
     required int id,
     required String name,
     required String status,
     required String species,
-    required String type,
     required String gender,
     required String image,
-    required List<String> episode,
-    required DateTime created,
   }) async {
     try {
-      CharacterModel character = CharacterModel(
+      LocalCharacter character = LocalCharacter(
         id: id,
         name: name,
         status: status,
         species: species,
-        type: type,
         gender: gender,
-        origin: null,
-        location: null,
         image: image,
-        episode: episode,
-        created: created,
       );
       characterLocalDataSource.uploadLocalCharacter(character: character);
       return right(null);
@@ -74,10 +67,21 @@ class CharacterRepoImpl implements CharacterRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteCharacter(String id) async {
+  Future<Either<Failure, void>> deleteCharacter(int id) async {
     try {
       await characterLocalDataSource.deleteLocalCharacter(id: id);
       return right(null);
+    } on CacheException {
+      return left(CacheFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CharacterEntity>>>
+      getAllFavoriteCharacters() async {
+    try {
+      final localCharacters = characterLocalDataSource.loadCharacters();
+      return right(localCharacters as List<CharacterEntity>);
     } on CacheException {
       return left(CacheFailure());
     }

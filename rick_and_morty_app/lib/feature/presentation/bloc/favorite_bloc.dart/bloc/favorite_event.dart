@@ -7,7 +7,25 @@ sealed class FavoritesEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadFavoritesEvent extends FavoritesEvent {}
+class LoadCharactersEvent extends FavoritesEvent {}
+
+class UploadFavoriteEvent extends FavoritesEvent {
+  final int id;
+  final String name;
+  final String status;
+  final String species;
+  final String gender;
+  final String image;
+
+  const UploadFavoriteEvent({
+    required this.id,
+    required this.name,
+    required this.status,
+    required this.species,
+    required this.gender,
+    required this.image,
+  });
+}
 
 class RemoveFavoriteEvent extends FavoritesEvent {
   final int characterId;

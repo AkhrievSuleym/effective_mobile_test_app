@@ -6,7 +6,7 @@ import 'package:rick_and_morty_app/feature/data/models/character_model.dart';
 
 abstract class RemoteDataSource {
   /// Calls the https://rickandmortyapi.com/api/character/?page=1 endpoint.
-  Future<List<CharacterModel>> getAllCharacters(int page);
+  Future<List<Character>> getAllCharacters(int page);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -15,14 +15,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
   RemoteDataSourceImpl({required this.client});
 
   @override
-  Future<List<CharacterModel>> getAllCharacters(int page) async {
+  Future<List<Character>> getAllCharacters(int page) async {
     final response = await client.get(
         Uri.parse('https://rickandmortyapi.com/api/character/?page=$page'),
         headers: {'Content-Type': 'application/json'});
     if (response.statusCode == 200) {
       final persons = json.decode(response.body);
       return (persons['results'] as List)
-          .map((person) => CharacterModel.fromJson(person))
+          .map((person) => Character.fromJson(person))
           .toList();
     } else {
       throw ServerException();

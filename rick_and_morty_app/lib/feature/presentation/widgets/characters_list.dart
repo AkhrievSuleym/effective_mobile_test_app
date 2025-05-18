@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:rick_and_morty_app/core/theme/app_pallete.dart';
 import 'package:rick_and_morty_app/feature/domain/entities/character_entity.dart';
 import 'package:rick_and_morty_app/feature/presentation/bloc/characters_bloc.dart/character_bloc.dart';
+import 'package:rick_and_morty_app/feature/presentation/bloc/favorite_bloc.dart/bloc/favorite_bloc.dart';
 import 'package:rick_and_morty_app/feature/presentation/widgets/character_card_widget.dart';
 import 'package:rick_and_morty_app/feature/presentation/widgets/loading_widget.dart';
 
@@ -67,25 +68,41 @@ class _CharactersListState extends State<CharactersList> {
           style: const TextStyle(color: Colors.white, fontSize: 25),
         );
       }
-      return ListView.separated(
-        controller: scrollController,
-        itemBuilder: (context, index) {
-          if (index < characters.length) {
-            return CharacterCard(character: characters[index]);
-          } else {
-            Timer(const Duration(milliseconds: 30), () {
-              scrollController
-                  .jumpTo(scrollController.position.maxScrollExtent);
-            });
-            return const LoadingIcon();
+      return BlocBuilder<FavoritesBloc, FavoritesState>(
+        builder: (context, favoritesState) {
+          List<CharacterEntity> favoriteCharacters = [];
+
+          if (favoritesState is FavoritesLoaded) {
+            favoriteCharacters = favoritesState.characters;
           }
-        },
-        separatorBuilder: (context, index) {
-          return const Divider(
-            color: AppPallete.greyColor,
+
+          return ListView.separated(
+            controller: scrollController,
+            itemBuilder: (context, index) {
+              if (index < characters.length) {
+                final character = characters[index];
+                final isFavorite =
+                    favoriteCharacters.any((fav) => fav.id == character.id);
+                return CharacterCard(
+                  character: character,
+                  isInitiallyFavorite: isFavorite,
+                );
+              } else {
+                Timer(const Duration(milliseconds: 30), () {
+                  scrollController
+                      .jumpTo(scrollController.position.maxScrollExtent);
+                });
+                return const LoadingIcon();
+              }
+            },
+            separatorBuilder: (context, index) {
+              return const Divider(
+                color: AppPallete.greyColor,
+              );
+            },
+            itemCount: characters.length + (isLoading ? 1 : 0),
           );
         },
-        itemCount: characters.length + (isLoading ? 1 : 0),
       );
     });
   }
