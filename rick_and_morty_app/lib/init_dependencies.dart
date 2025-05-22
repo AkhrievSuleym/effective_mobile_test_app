@@ -1,10 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:logger/logger.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rick_and_morty_app/core/network/connection.dart';
 import 'package:rick_and_morty_app/feature/data/datasources/local_data_source.dart';
 import 'package:rick_and_morty_app/feature/data/datasources/remote_data_source.dart';
