@@ -85,7 +85,7 @@ class FavoritesPage extends StatelessWidget {
                           const SizedBox(width: 12),
                           IconButton(
                             icon: const Icon(Icons.star,
-                                size: 40, color: Colors.amber),
+                                size: 50, color: Colors.amber),
                             onPressed: () => context
                                 .read<FavoritesBloc>()
                                 .add(RemoveFavoriteEvent(character.id)),
