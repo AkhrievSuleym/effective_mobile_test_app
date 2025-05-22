@@ -30,7 +30,6 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<void> addFavorite({required CharacterModel character}) async {
-    final prefs = await SharedPreferences.getInstance();
     final currentFavorites = await getFavorites();
     if (!currentFavorites.any((c) => c.id == character.id)) {
       currentFavorites.add(character);
@@ -40,7 +39,6 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<void> removeFavorite({required int id}) async {
-    final prefs = await SharedPreferences.getInstance();
     final currentFavorites = await getFavorites();
     currentFavorites.removeWhere((c) => c.id == id);
     await saveFavorites(currentFavorites);
